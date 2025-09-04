@@ -1,102 +1,252 @@
-import Image from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Islamic Donation Management - Track Sadaqah & Charity",
+  description: "Professional Islamic donation management system for tracking sadaqah, zakat, and charity contributions. Secure platform for Muslim community to manage donations in Pakistani Rupees with complete record keeping.",
+  keywords: [
+    "Islamic donations",
+    "Sadaqah tracker",
+    "Zakat management",
+    "Muslim charity",
+    "Donation records",
+    "Islamic finance",
+    "PKR donations",
+    "Charity tracking"
+  ],
+  openGraph: {
+    title: "Sadaqah - Islamic Donation Management System",
+    description: "Track and manage your Islamic donations with our comprehensive platform designed for the Muslim community.",
+    type: "website",
+  },
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-100">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-emerald-800">Sadaqah - Islamic Donation Management</h1>
+          <nav className="space-x-4" role="navigation">
+            <Link href="/login">
+              <Button variant="outline" aria-label="Login to your donation dashboard">Login</Button>
+            </Link>
+            <Link href="/register">
+              <Button className="bg-emerald-600 hover:bg-emerald-700" aria-label="Create new donation management account">Register</Button>
+            </Link>
+          </nav>
         </div>
+      </header>
+
+      {/* Hero Section */}
+      <main>
+        <section className="container mx-auto px-4 py-16 text-center">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-5xl font-bold text-gray-800 mb-6">
+              Manage Islamic Donations with <span className="text-emerald-600">Sadaqah</span>
+            </h2>
+            <p className="text-xl text-gray-600 mb-8">
+              Professional Islamic donation management system for tracking sadaqah, zakat, and charity contributions in Pakistani Rupees (PKR). Secure platform designed for the Muslim community.
+            </p>
+            <Link href="/register">
+              <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-lg px-8 py-3" aria-label="Start managing your donations">
+                Start Managing Donations
+              </Button>
+            </Link>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h3 className="text-3xl font-bold text-center text-gray-800 mb-12">
+            Complete Islamic Donation Management Features
+          </h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-emerald-800">📊 Comprehensive Tracking</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Track all your sadaqah, zakat, and charity contributions with detailed records. 
+                  Manage donations given and received with complete transparency.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-emerald-800">💰 PKR Currency Support</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Native Pakistani Rupees (PKR) support with proper formatting. 
+                  Designed specifically for Pakistani Muslim community donation tracking.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-emerald-800">🔒 Secure & Private</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Your donation records are completely private and secure. 
+                  Islamic-compliant platform with admin-only access for personal record keeping.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-emerald-800">📈 Advanced Reports</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Generate detailed reports with filtering and pagination. 
+                  Analyze your charitable giving patterns and Islamic contribution history.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-emerald-800">✏️ Edit & Manage</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Full CRUD operations - create, read, update, and delete donation records. 
+                  Complete control over your Islamic donation management.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-emerald-800">📅 Date Management</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Record donations with specific dates or use current timestamp. 
+                  Historical tracking for better Islamic financial record keeping.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Hadith Section */}
+      <section className="bg-white py-16">
+        <div className="container mx-auto px-4">
+          <h3 className="text-3xl font-bold text-center text-gray-800 mb-12">
+            Wisdom from the Sunnah
+          </h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="border-l-4 border-l-emerald-500">
+              <CardContent className="p-6">
+                <blockquote className="text-gray-700 italic mb-4">
+                  "The believer's shade on the Day of Resurrection will be his charity."
+                </blockquote>
+                <cite className="text-emerald-600 font-semibold">- Prophet Muhammad (ﷺ)</cite>
+                <p className="text-sm text-gray-500 mt-2">Hadith: Tirmidhi</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-l-4 border-l-emerald-500">
+              <CardContent className="p-6">
+                <blockquote className="text-gray-700 italic mb-4">
+                  "Charity does not decrease wealth."
+                </blockquote>
+                <cite className="text-emerald-600 font-semibold">- Prophet Muhammad (ﷺ)</cite>
+                <p className="text-sm text-gray-500 mt-2">Hadith: Muslim</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-l-4 border-l-emerald-500">
+              <CardContent className="p-6">
+                <blockquote className="text-gray-700 italic mb-4">
+                  "Give charity without delay, for it stands in the way of calamity."
+                </blockquote>
+                <cite className="text-emerald-600 font-semibold">- Prophet Muhammad (ﷺ)</cite>
+                <p className="text-sm text-gray-500 mt-2">Hadith: Tirmidhi</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h3 className="text-3xl font-bold text-center text-gray-800 mb-12">
+            Features
+          </h3>
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="text-center">
+              <CardHeader>
+                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">📊</span>
+                </div>
+                <CardTitle>Track Your Giving</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Keep a detailed record of all your charitable donations and their impact.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center">
+              <CardHeader>
+                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">🤝</span>
+                </div>
+                <CardTitle>Connect & Give</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Connect with verified recipients and make direct charitable contributions.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center">
+              <CardHeader>
+                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl">📈</span>
+                </div>
+                <CardTitle>Analytics & Insights</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  View detailed analytics of your charitable giving patterns and impact.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-white py-8">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-gray-400">
+            © 2025 Sadaqah - Islamic Donation Management Platform. Made with ❤️ for the Muslim Ummah.
+          </p>
+          <p className="text-gray-500 text-sm mt-2">
+            Track Sadaqah, Zakat & Charity Contributions | PKR Currency Support | Secure & Private
+          </p>
+        </div>
       </footer>
     </div>
   );
