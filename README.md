@@ -66,26 +66,102 @@ A beautifully designed Next.js application for tracking charitable giving (Sadaq
 ### Prerequisites
 - Node.js 18+ installed
 - Neon PostgreSQL database account
+- Git installed on your machine
+
+### Database Setup
+
+#### 1. **Create Neon PostgreSQL Database**
+1. Visit [Neon.tech](https://neon.tech) and create a free account
+2. Create a new project/database
+3. Copy your connection string from the dashboard
+
+#### 2. **Database Schema Setup**
+The application requires a PostgreSQL database with the following table structure:
+
+```sql
+-- Create donations table
+CREATE TABLE donations (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    amount DECIMAL(10,2) NOT NULL,
+    currency VARCHAR(3) DEFAULT 'PKR',
+    description TEXT,
+    category VARCHAR(50) DEFAULT 'General',
+    type VARCHAR(10) NOT NULL CHECK (type IN ('GIVEN', 'RECEIVED')),
+    status VARCHAR(20) DEFAULT 'COMPLETED',
+    "donorId" VARCHAR(255),
+    "recipientId" VARCHAR(255),
+    "recipientName" VARCHAR(255) NOT NULL,
+    "donatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    donor_name VARCHAR(255),
+    location VARCHAR(255)
+);
+
+-- Create users table
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(255),
+    "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create indexes for better performance
+CREATE INDEX idx_donations_type ON donations(type);
+CREATE INDEX idx_donations_donated_at ON donations("donatedAt");
+CREATE INDEX idx_users_username ON users(username);
+```
+
+#### 3. **Environment Variables Setup**
+Create a `.env.local` file in your project root:
+
+```bash
+# Database Configuration
+DATABASE_URL=postgresql://username:password@host:port/database?sslmode=require
+
+# Authentication
+NEXTAUTH_SECRET=your-secret-key-here
+NEXTAUTH_URL=http://localhost:3002
+
+# App Configuration (for production)
+NEXT_PUBLIC_APP_URL=http://localhost:3002
+```
+
+**Example DATABASE_URL format:**
+```
+DATABASE_URL=postgresql://neondb_owner:your_password@ep-xxx-xxx.region.aws.neon.tech/neondb?sslmode=require
+```
 
 ### Installation
 
-1. **Clone and install dependencies:**
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/aadeelyounas/sadaqah.git
+   cd sadaqah
+   ```
+
+2. **Install dependencies:**
    ```bash
    npm install
    ```
 
-2. **Set up environment variables:**
-   Create `.env.local` with your Neon connection string:
-   ```
-   DATABASE_URL=your_neon_connection_string
-   ```
+3. **Set up your environment variables:**
+   - Copy `.env.example` to `.env.local`
+   - Update the `DATABASE_URL` with your Neon connection string
+   - Generate a secure `NEXTAUTH_SECRET` (you can use: `openssl rand -base64 32`)
 
-3. **Run the development server:**
+4. **Run the database setup:**
+   - Connect to your Neon database using their SQL Editor or psql
+   - Execute the SQL schema provided above
+
+5. **Run the development server:**
    ```bash
    npm run dev
    ```
 
-4. **Access the application:**
+6. **Access the application:**
    Open [http://localhost:3002](http://localhost:3002)
 
 ## 🔑 **Getting Access**
@@ -151,21 +227,42 @@ The platform features authentic Islamic content including:
 - [ ] Integration with payment systems
 - [ ] Multi-language support (Arabic)
 
+## 🚀 **Deployment**
+
+### Deploy to Vercel
+
+This project is configured for easy deployment on Vercel:
+
+1. **Push your code to GitHub** (already done if you cloned this repo)
+
+2. **Connect to Vercel:**
+   - Visit [Vercel](https://vercel.com)
+   - Import your GitHub repository
+   - Vercel will auto-detect Next.js configuration
+
+3. **Configure Environment Variables in Vercel:**
+   In your Vercel project dashboard, add these environment variables:
+   ```
+   DATABASE_URL=your_neon_production_connection_string
+   NEXTAUTH_SECRET=your_secure_secret_key
+   NEXTAUTH_URL=https://your-app-domain.vercel.app
+   ```
+
+4. **Deploy:**
+   - Vercel will automatically deploy on every push to main branch
+   - Your app will be available at `https://your-app-name.vercel.app`
+
+### Environment Variables Reference
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `DATABASE_URL` | Neon PostgreSQL connection string | `postgresql://user:pass@host/db` |
+| `NEXTAUTH_SECRET` | Secret key for authentication | `your-secret-key` |
+| `NEXTAUTH_URL` | Full URL of your application | `https://yourapp.vercel.app` |
+| `NEXT_PUBLIC_APP_URL` | Public URL for SEO and metadata | `https://yourapp.vercel.app` |
+
 ---
 
 **"The believer's shade on the Day of Resurrection will be his charity."** - Prophet Muhammad (ﷺ)
 
 Made with ❤️ for the Ummah
-
-## To Do
-- Implement authentication
-- Integrate ShadUI
-- Set up PostgreSQL models and API routes
-- Build donation management UI
-- Add reporting and analytics UI
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
