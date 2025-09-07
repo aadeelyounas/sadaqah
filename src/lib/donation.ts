@@ -8,7 +8,7 @@ export async function createDonation(
   location?: string,
   donatedAt?: string
 ) {
-  const result = await pool.query(
+  const result = await pool().query(
     `INSERT INTO donations (
       id, amount, currency, description, category, type, status, 
       "donorId", "recipientId", "recipientName", "donatedAt", "updatedAt", donor_name, location
@@ -32,7 +32,7 @@ export async function createDonation(
 
 export async function getDonationsByUser(userId: string) {
   // For admin view, return all donations
-  const result = await pool.query(
+  const result = await pool().query(
     'SELECT * FROM donations ORDER BY "donatedAt" DESC'
   );
   return result.rows;
@@ -40,12 +40,12 @@ export async function getDonationsByUser(userId: string) {
 
 export async function getRecentDonations(userId: string, limit: number = 5) {
   // For admin view, show recent given and received donations
-  const given = await pool.query(
+  const given = await pool().query(
     'SELECT *, \'given\' as donation_type FROM donations WHERE type = \'GIVEN\' ORDER BY "donatedAt" DESC LIMIT $1',
     [limit]
   );
   
-  const received = await pool.query(
+  const received = await pool().query(
     'SELECT *, \'received\' as donation_type FROM donations WHERE type = \'RECEIVED\' ORDER BY "donatedAt" DESC LIMIT $1',
     [limit]
   );
@@ -57,11 +57,11 @@ export async function getRecentDonations(userId: string, limit: number = 5) {
 }
 
 export async function getTotalStats() {
-  const given = await pool.query(
+  const given = await pool().query(
     'SELECT COALESCE(SUM(amount), 0) as total FROM donations WHERE type = \'GIVEN\''
   );
   
-  const received = await pool.query(
+  const received = await pool().query(
     'SELECT COALESCE(SUM(amount), 0) as total FROM donations WHERE type = \'RECEIVED\''
   );
   
@@ -73,12 +73,12 @@ export async function getTotalStats() {
 
 export async function getUserDonationSummary(userId: string) {
   // For admin view, show total amounts given and received in the system
-  const givenResult = await pool.query(
+  const givenResult = await pool().query(
     'SELECT COALESCE(SUM(amount), 0) as total FROM donations WHERE type = \'GIVEN\'',
     []
   );
   
-  const receivedResult = await pool.query(
+  const receivedResult = await pool().query(
     'SELECT COALESCE(SUM(amount), 0) as total FROM donations WHERE type = \'RECEIVED\'',
     []
   );
@@ -94,7 +94,7 @@ export async function getUserDonationSummary(userId: string) {
 }
 
 export async function getTotalDonationCount() {
-  const result = await pool.query(
+  const result = await pool().query(
     'SELECT COUNT(*) as total FROM donations'
   );
   
@@ -110,7 +110,7 @@ export async function updateDonation(
   location?: string,
   donatedAt?: string
 ) {
-  const result = await pool.query(
+  const result = await pool().query(
     `UPDATE donations SET 
       amount = $2, 
       type = $3, 
@@ -142,7 +142,7 @@ export async function updateDonation(
 }
 
 export async function deleteDonation(id: string) {
-  const result = await pool.query(
+  const result = await pool().query(
     'DELETE FROM donations WHERE id = $1 RETURNING *',
     [id]
   );
@@ -155,7 +155,7 @@ export async function deleteDonation(id: string) {
 }
 
 export async function getDonationById(id: string) {
-  const result = await pool.query(
+  const result = await pool().query(
     'SELECT * FROM donations WHERE id = $1',
     [id]
   );

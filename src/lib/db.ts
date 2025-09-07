@@ -17,4 +17,5 @@ function getPool(): Pool {
   return pool;
 }
 
-export default getPool();
+// Export the function instead of calling it immediately
+export default getPool;
