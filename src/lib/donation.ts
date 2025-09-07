@@ -31,7 +31,7 @@ export async function createDonation(
 }
 
 export async function getDonationsByUser(userId: string) {
-  // For admin view, return all donations
+  // For unified system, return all donations
   const result = await pool().query(
     'SELECT * FROM donations ORDER BY "donatedAt" DESC'
   );
@@ -39,7 +39,7 @@ export async function getDonationsByUser(userId: string) {
 }
 
 export async function getRecentDonations(userId: string, limit: number = 5) {
-  // For admin view, show recent given and received donations
+  // For unified system, show recent given and received donations from all users
   const given = await pool().query(
     'SELECT *, \'given\' as donation_type FROM donations WHERE type = \'GIVEN\' ORDER BY "donatedAt" DESC LIMIT $1',
     [limit]
@@ -72,7 +72,7 @@ export async function getTotalStats() {
 }
 
 export async function getUserDonationSummary(userId: string) {
-  // For admin view, show total amounts given and received in the system
+  // For unified system, show total amounts given and received across all users
   const givenResult = await pool().query(
     'SELECT COALESCE(SUM(amount), 0) as total FROM donations WHERE type = \'GIVEN\'',
     []

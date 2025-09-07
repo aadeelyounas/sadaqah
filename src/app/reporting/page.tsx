@@ -43,6 +43,14 @@ function ReportingPageContent() {
     try {
       console.log('Loading reporting data...');
       
+      // Get current user
+      const userData = localStorage.getItem("user");
+      if (!userData) {
+        router.push("/login");
+        return;
+      }
+      const currentUser = JSON.parse(userData);
+      
       // Load report summary
       const reportRes = await fetch("/api/reporting");
       if (!reportRes.ok) {
@@ -52,8 +60,8 @@ function ReportingPageContent() {
       console.log('Report data loaded:', reportData);
       setReport(reportData);
 
-      // Load all donations for filtering and pagination
-      const donationsRes = await fetch(`/api/donations?userId=admin&type=all`);
+      // Load all donations for the current user
+      const donationsRes = await fetch(`/api/donations?userId=${currentUser.id}&type=all`);
       if (!donationsRes.ok) {
         throw new Error(`Donations API failed: ${donationsRes.status}`);
       }
