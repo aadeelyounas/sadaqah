@@ -2,7 +2,7 @@ import pool from '@/lib/db';
 
 export async function createUser(email: string, passwordHash: string) {
   const result = await pool().query(
-    'INSERT INTO users (id, email, password_hash) VALUES (gen_random_uuid(), $1, $2) RETURNING id, email',
+    'INSERT INTO users (id, email, password_hash, "createdAt", "updatedAt") VALUES (gen_random_uuid(), $1, $2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) RETURNING id, email',
     [email, passwordHash]
   );
   return result.rows[0];
