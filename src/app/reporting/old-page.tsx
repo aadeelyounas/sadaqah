@@ -55,7 +55,7 @@ function ReportingPageContent() {
             <Link href="/dashboard">
               <Button variant="outline">Dashboard</Button>
             </Link>
-            <span className="text-gray-600">Welcome, {user?.email}</span>
+            <span className="text-gray-600">Welcome, {user?.email?.substring(0, 6)}...</span>
             <Button 
               onClick={handleLogout}
               variant="outline"

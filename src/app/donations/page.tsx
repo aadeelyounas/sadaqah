@@ -19,6 +19,7 @@ function DonationsPageContent() {
   const [location, setLocation] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [showAddForm, setShowAddForm] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -66,6 +67,11 @@ function DonationsPageContent() {
         setRecipientId("");
         setAmount("");
         setLocation("");
+        // Hide the form after successful submission
+        setTimeout(() => {
+          setShowAddForm(false);
+          setMessage("");
+        }, 2000);
         // Refresh donations list
         loadDonations(user.id);
       } else {
@@ -102,7 +108,7 @@ function DonationsPageContent() {
             <Link href="/dashboard">
               <Button variant="outline">Dashboard</Button>
             </Link>
-            <span className="text-gray-600">Welcome, {user?.email}</span>
+            <span className="text-gray-600">Welcome, {user?.email?.substring(0, 6)}...</span>
             <Button 
               onClick={handleLogout}
               variant="outline"
@@ -120,89 +126,101 @@ function DonationsPageContent() {
           <p className="text-gray-600">Record and track your charitable giving</p>
         </div>
 
-        {/* Record New Donation */}
-        <Card className="shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-emerald-800 flex items-center">
-              <span className="mr-2">💰</span>
-              Record New Donation
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="donorId">Your ID (Donor)</Label>
-                <Input
-                  id="donorId"
-                  type="text"
-                  value={donorId}
-                  disabled
-                  className="bg-gray-50"
-                />
-              </div>
-              <div>
-                <Label htmlFor="donorName">Your Name</Label>
-                <Input
-                  id="donorName"
-                  type="text"
-                  value={donorName}
-                  onChange={(e) => setDonorName(e.target.value)}
-                  placeholder="Enter your name"
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="recipientId">Recipient ID</Label>
-                <Input
-                  id="recipientId"
-                  type="text"
-                  value={recipientId}
-                  onChange={(e) => setRecipientId(e.target.value)}
-                  placeholder="Enter recipient's ID"
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="location">Location</Label>
-                <Input
-                  id="location"
-                  type="text"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  placeholder="Enter location"
-                  required
-                />
-              </div>
-              <div className="md:col-span-2">
-                <Label htmlFor="amount">Amount (PKR)</Label>
-                <Input
-                  id="amount"
-                  type="number"
-                  step="1"
-                  min="1"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  placeholder="0"
-                  required
-                />
-              </div>
-              <div className="md:col-span-2">
-                <Button 
-                  type="submit" 
-                  disabled={loading}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700"
+        {/* Record New Donation - Conditional Display */}
+        {showAddForm && (
+          <Card className="shadow-lg">
+            <CardHeader>
+              <CardTitle className="text-emerald-800 flex items-center justify-between">
+                <div className="flex items-center">
+                  <span className="mr-2">💰</span>
+                  Record New Donation
+                </div>
+                <Button
+                  onClick={() => setShowAddForm(false)}
+                  variant="ghost"
+                  size="sm"
+                  className="text-gray-500 hover:text-gray-700"
                 >
-                  {loading ? "Recording..." : "Record Donation"}
+                  ✕
                 </Button>
-              </div>
-            </form>
-            {message && (
-              <p className={`mt-4 text-center ${message.includes("successful") ? "text-green-600" : "text-red-600"}`}>
-                {message}
-              </p>
-            )}
-          </CardContent>
-        </Card>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="donorId">Your ID (Donor)</Label>
+                  <Input
+                    id="donorId"
+                    type="text"
+                    value={donorId}
+                    disabled
+                    className="bg-gray-50"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="donorName">Your Name</Label>
+                  <Input
+                    id="donorName"
+                    type="text"
+                    value={donorName}
+                    onChange={(e) => setDonorName(e.target.value)}
+                    placeholder="Enter your name"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="recipientId">Recipient ID</Label>
+                  <Input
+                    id="recipientId"
+                    type="text"
+                    value={recipientId}
+                    onChange={(e) => setRecipientId(e.target.value)}
+                    placeholder="Enter recipient's ID"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="location">Location</Label>
+                  <Input
+                    id="location"
+                    type="text"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="Enter location"
+                    required
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <Label htmlFor="amount">Amount (PKR)</Label>
+                  <Input
+                    id="amount"
+                    type="number"
+                    step="1"
+                    min="1"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="0"
+                    required
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <Button 
+                    type="submit" 
+                    disabled={loading}
+                    className="w-full bg-emerald-600 hover:bg-emerald-700"
+                  >
+                    {loading ? "Recording..." : "Record Donation"}
+                  </Button>
+                </div>
+              </form>
+              {message && (
+                <p className={`mt-4 text-center ${message.includes("successful") ? "text-green-600" : "text-red-600"}`}>
+                  {message}
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        )}
 
         {/* Donation History */}
         <Card className="shadow-lg">
@@ -268,6 +286,17 @@ function DonationsPageContent() {
           </CardContent>
         </Card>
       </div>
+      
+      {/* Floating Add Donation Button */}
+      <button
+        onClick={() => setShowAddForm(!showAddForm)}
+        className="fixed bottom-6 right-6 w-14 h-14 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-2xl font-light z-50 group"
+        title="Add New Donation"
+      >
+        <span className={`transition-transform duration-300 ${showAddForm ? 'rotate-45' : 'rotate-0'}`}>
+          +
+        </span>
+      </button>
     </div>
   );
 }

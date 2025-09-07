@@ -41,18 +41,32 @@ function ReportingPageContent() {
   const loadData = async () => {
     setLoading(true);
     try {
+      console.log('Loading reporting data...');
+      
       // Load report summary
       const reportRes = await fetch("/api/reporting");
+      if (!reportRes.ok) {
+        throw new Error(`Reporting API failed: ${reportRes.status}`);
+      }
       const reportData = await reportRes.json();
+      console.log('Report data loaded:', reportData);
       setReport(reportData);
 
       // Load all donations for filtering and pagination
       const donationsRes = await fetch(`/api/donations?userId=admin&type=all`);
+      if (!donationsRes.ok) {
+        throw new Error(`Donations API failed: ${donationsRes.status}`);
+      }
       const donationsData = await donationsRes.json();
+      console.log('Donations data loaded:', donationsData);
       setDonations(donationsData.donations || []);
       setFilteredDonations(donationsData.donations || []);
     } catch (error) {
       console.error('Error loading data:', error);
+      // Set some fallback data so the page doesn't appear completely broken
+      setReport({ totalAmount: 0, topDonors: [], topReceivers: [] });
+      setDonations([]);
+      setFilteredDonations([]);
     } finally {
       setLoading(false);
     }
@@ -173,7 +187,7 @@ function ReportingPageContent() {
             </Link>
           </div>
           <div className="flex items-center space-x-4">
-            <span className="text-gray-600">Welcome, {user?.email}</span>
+            <span className="text-gray-600">Welcome, {user?.email?.substring(0, 6)}...</span>
             <Button 
               onClick={handleLogout}
               variant="outline"

@@ -10,12 +10,25 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 interface AddDonationDialogProps {
   user: any;
   onDonationAdded: () => void;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  hideButton?: boolean;
 }
 
-export default function AddDonationDialog({ user, onDonationAdded }: AddDonationDialogProps) {
-  const [open, setOpen] = useState(false);
+export default function AddDonationDialog({ 
+  user, 
+  onDonationAdded, 
+  open: externalOpen, 
+  onOpenChange: externalOnOpenChange,
+  hideButton = false 
+}: AddDonationDialogProps) {
+  const [internalOpen, setInternalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+
+  // Use external control if provided, otherwise use internal state
+  const open = externalOpen !== undefined ? externalOpen : internalOpen;
+  const setOpen = externalOnOpenChange || setInternalOpen;
 
   // Given donation form state
   const [givenRecipientName, setGivenRecipientName] = useState("");
@@ -119,12 +132,14 @@ export default function AddDonationDialog({ user, onDonationAdded }: AddDonation
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="bg-emerald-600 hover:bg-emerald-700">
-          <span className="mr-2">➕</span>
-          Add Donation
-        </Button>
-      </DialogTrigger>
+      {!hideButton && (
+        <DialogTrigger asChild>
+          <Button className="bg-emerald-600 hover:bg-emerald-700">
+            <span className="mr-2">➕</span>
+            Add Donation
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle className="text-emerald-800">Add Donation Record</DialogTitle>

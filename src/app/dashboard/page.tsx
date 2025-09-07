@@ -14,6 +14,7 @@ export default function DashboardPage() {
   const [totalDonations, setTotalDonations] = useState<number>(0);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [showAddDialog, setShowAddDialog] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -85,7 +86,7 @@ export default function DashboardPage() {
             Sadaqah Dashboard
           </Link>
           <div className="flex items-center space-x-4">
-            <span className="text-gray-600">Welcome, {user.email}</span>
+            <span className="text-gray-600">Welcome, {user.email?.substring(0, 6)}...</span>
             <Button 
               onClick={handleLogout}
               variant="outline"
@@ -325,6 +326,26 @@ export default function DashboardPage() {
           </Card>
         </div>
       </main>
+      
+      {/* Floating Add Donation Button */}
+      <button
+        onClick={() => setShowAddDialog(true)}
+        className="fixed bottom-6 right-6 w-14 h-14 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center text-2xl font-light z-50 group"
+        title="Add New Donation"
+      >
+        <span className="transition-transform duration-300 group-hover:scale-110">
+          +
+        </span>
+      </button>
+      
+      {/* Hidden Add Donation Dialog for Floating Button */}
+      <AddDonationDialog 
+        user={user} 
+        onDonationAdded={() => loadDashboardData(user?.id || '')}
+        open={showAddDialog}
+        onOpenChange={setShowAddDialog}
+        hideButton={true}
+      />
     </div>
   );
 }
